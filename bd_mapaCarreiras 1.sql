@@ -5,7 +5,7 @@ Turma: C.  Periodo: 2º Sem. Turno: Noturno.
 
 Caio Fernando Silva: 11261101927; 
 
-Christian Matheus Costa Alves: 11261102933; 
+Christian Mateus Costa Alves: 11261102933; 
 
 João Pedro Alves Pereira: 11261102895; 
 
@@ -618,7 +618,7 @@ CREATE INDEX idx_certificado_aluno_emissao ON certificado(id_aluno, dt_emissao);
 
 -- ---------------------------------------------------------------------
 -- VIEW: Relatório gerencial de vagas e candidaturas
--- Christian Matheus Costa Alves: 11261102933
+-- Christian Mateus Costa Alves: 11261102933
 -- ---------------------------------------------------------------------
 CREATE VIEW Relatorio_Gerencial_Vagas AS
 SELECT p.id AS id_professor,
@@ -634,5 +634,5 @@ WHERE p.ativo = TRUE
 GROUP BY p.id, u.nome;
 
 -- ÍNDICE: Busca rápida de usuários por e-mail no login
--- Christian Matheus Costa Alves: 11261102933
+-- Christian Mateus Costa Alves: 11261102933
 CREATE INDEX idx_usuario_email_ativo ON usuario(email, ativo);
