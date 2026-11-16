@@ -595,7 +595,9 @@ SELECT * FROM Relatorio_Gerencial_Cursos;
 -- ÍNDICE: vagas abertas, das mais recentes para as mais antigas 
 -- Caio Fernando Silva: 11261101927
 -- ---------------------------------------------------------------------
+CREATE INDEX idx_vaga_status_publicacao ON vaga(status, dt_publicacao);
 
+SHOW INDEX FROM vaga;
 -- ---------------------------------------------------------------------
 -- VIEW: Relatório gerencial de emissão de certificados por aluno
 -- Leonardo Viana de Oliveira: 11261102539
