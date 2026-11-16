@@ -31,7 +31,7 @@ CREATE TABLE usuario (
     dt_nasc DATE,
     endereco VARCHAR(300),
     telefone VARCHAR(20),
-    dt_cadastro DATE,
+    dt_cadastro DATE NOT NULL DEFAULT (NOW()),
     ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
@@ -241,27 +241,27 @@ START TRANSACTION;
 -- 1) Tabelas sem chave estrangeira
 -- ---------------------------------------------------------------------
 
-INSERT INTO usuario (nome, email, senha, cpf, dt_nasc, endereco, telefone, dt_cadastro) VALUES
-('Ana Beatriz Souza',         'ana.souza@exemplo.com',             'senha123', '01234567890', '2002-03-14', 'Rua das Acácias, 120 - São Paulo/SP',          '(11) 91234-5601', '2026-02-02'),
-('Lucas Henrique Oliveira',   'lucas.oliveira@exemplo.com',        'senha123', '23456789012', '2001-07-22', 'Av. Brasil, 450 - Campinas/SP',                '(19) 98123-4502', '2026-02-02'),
-('Mariana Costa Pereira',     'mariana.pereira@exemplo.com',       'senha123', '34567890123', '2003-11-05', 'Rua Sete de Setembro, 88 - Santos/SP',         '(13) 99876-5403', '2026-02-03'),
-('Gabriel Santos Almeida',    'gabriel.almeida@exemplo.com',       'senha123', '45678901234', '2000-01-30', 'Rua XV de Novembro, 301 - Curitiba/PR',        '(41) 99765-4304', '2026-02-05'),
-('Isabela Rodrigues Martins', 'isabela.martins@exemplo.com',       'senha123', '56789012345', '2004-05-18', 'Av. Paulista, 1500 - São Paulo/SP',            '(11) 97654-3205', '2026-02-05'),
-('Pedro Augusto Barbosa',     'pedro.barbosa@exemplo.com',         'senha123', '67890123456', '1999-09-09', 'Rua Minas Gerais, 77 - Belo Horizonte/MG',     '(31) 98543-2106', '2026-02-09'),
-('Larissa Fernandes Nunes',   'larissa.nunes@exemplo.com',         'senha123', '78901234567', '2002-12-01', 'Rua do Comércio, 19 - Recife/PE',              '(81) 99432-1007', '2026-02-10'),
-('Rafael Carvalho Ribeiro',   'rafael.ribeiro@exemplo.com',        'senha123', '89012345678', '2001-04-27', 'Rua das Palmeiras, 640 - Sorocaba/SP',         '(15) 98321-0908', '2026-02-12'),
-('Camila Araújo Dias',        'camila.dias@exemplo.com',           'senha123', '90123456789', '2005-08-16', 'Av. Atlântica, 210 - Rio de Janeiro/RJ',       '(21) 97210-9809', '2026-02-16'),
-('Thiago Moreira Cardoso',    'thiago.cardoso@exemplo.com',        'senha123', '02345678901', '2000-10-03', 'Rua Goiás, 55 - Goiânia/GO',                   '(62) 99109-8710', '2026-02-16'),
-('Marcos Vinícius Ferreira',  'marcos.ferreira@prof.exemplo.com',  'senha123', '13579246801', '1982-06-12', 'Rua Augusta, 900 - São Paulo/SP',              '(11) 95555-1101', '2025-11-10'),
-('Fernanda Lima Rocha',       'fernanda.rocha@prof.exemplo.com',   'senha123', '24680135792', '1985-02-25', 'Rua Bahia, 340 - Salvador/BA',                 '(71) 95555-1202', '2025-11-10'),
-('Patrícia Gomes Duarte',     'patricia.duarte@prof.exemplo.com',  'senha123', '35791368024', '1988-09-14', 'Rua das Laranjeiras, 15 - Florianópolis/SC',   '(48) 95555-1303', '2025-11-12'),
-('Ricardo Alves Teixeira',    'ricardo.teixeira@prof.exemplo.com', 'senha123', '46802479135', '1979-12-03', 'Av. Independência, 720 - Porto Alegre/RS',     '(51) 95555-1404', '2025-11-12'),
-('Juliana Castro Mendes',     'juliana.mendes@prof.exemplo.com',   'senha123', '57913580246', '1990-04-08', 'Rua Pernambuco, 98 - Fortaleza/CE',            '(85) 95555-1505', '2026-10-15'),
-('Beatriz Monteiro Lopes',    'beatriz.lopes@admin.exemplo.com',   'senha123', '68024691357', '1984-07-19', 'Rua da Consolação, 2000 - São Paulo/SP',       '(11) 94444-1606', '2025-10-01'),
-('Eduardo Pinheiro Silva',    'eduardo.silva@admin.exemplo.com',   'senha123', '79135702468', '1987-03-23', 'Av. Rio Branco, 500 - Rio de Janeiro/RJ',      '(21) 94444-1707', '2025-10-01'),
-('Jéssica Lima Silveira',     'jessica.silveira@exemplo.com',      'senha123', '98765432109', '2004-02-11', 'Rua das Flores, 300 - Campinas/SP',            '(19) 97788-9900', '2026-03-01'),
-('Lucas Gabriel Martins',     'lucas.martins@exemplo.com',         'senha123', '12345678901', '2003-07-15', 'Av. Paulista, 1000 - São Paulo/SP',            '(11) 98877-6655', '2026-03-02'),
-('Beatriz Souza Costa',       'beatriz.costa@exemplo.com',         'senha123', '32165498702', '2001-11-20', 'Rua da Bahia, 500 - Belo Horizonte/MG',        '(31) 97766-5544', '2026-03-02');
+INSERT INTO usuario (nome, email, senha, cpf, dt_nasc, endereco, telefone) VALUES
+('Ana Beatriz Souza',         'ana.souza@exemplo.com',             'senha123', '01234567890', '2002-03-14', 'Rua das Acácias, 120 - São Paulo/SP',          '(11) 91234-5601'),
+('Lucas Henrique Oliveira',   'lucas.oliveira@exemplo.com',        'senha123', '23456789012', '2001-07-22', 'Av. Brasil, 450 - Campinas/SP',                '(19) 98123-4502'),
+('Mariana Costa Pereira',     'mariana.pereira@exemplo.com',       'senha123', '34567890123', '2003-11-05', 'Rua Sete de Setembro, 88 - Santos/SP',         '(13) 99876-5403'),
+('Gabriel Santos Almeida',    'gabriel.almeida@exemplo.com',       'senha123', '45678901234', '2000-01-30', 'Rua XV de Novembro, 301 - Curitiba/PR',        '(41) 99765-4304'),
+('Isabela Rodrigues Martins', 'isabela.martins@exemplo.com',       'senha123', '56789012345', '2004-05-18', 'Av. Paulista, 1500 - São Paulo/SP',            '(11) 97654-3205'),
+('Pedro Augusto Barbosa',     'pedro.barbosa@exemplo.com',         'senha123', '67890123456', '1999-09-09', 'Rua Minas Gerais, 77 - Belo Horizonte/MG',     '(31) 98543-2106'),
+('Larissa Fernandes Nunes',   'larissa.nunes@exemplo.com',         'senha123', '78901234567', '2002-12-01', 'Rua do Comércio, 19 - Recife/PE',              '(81) 99432-1007'),
+('Rafael Carvalho Ribeiro',   'rafael.ribeiro@exemplo.com',        'senha123', '89012345678', '2001-04-27', 'Rua das Palmeiras, 640 - Sorocaba/SP',         '(15) 98321-0908'),
+('Camila Araújo Dias',        'camila.dias@exemplo.com',           'senha123', '90123456789', '2005-08-16', 'Av. Atlântica, 210 - Rio de Janeiro/RJ',       '(21) 97210-9809'),
+('Thiago Moreira Cardoso',    'thiago.cardoso@exemplo.com',        'senha123', '02345678901', '2000-10-03', 'Rua Goiás, 55 - Goiânia/GO',                   '(62) 99109-8710'),
+('Marcos Vinícius Ferreira',  'marcos.ferreira@prof.exemplo.com',  'senha123', '13579246801', '1982-06-12', 'Rua Augusta, 900 - São Paulo/SP',              '(11) 95555-1101'),
+('Fernanda Lima Rocha',       'fernanda.rocha@prof.exemplo.com',   'senha123', '24680135792', '1985-02-25', 'Rua Bahia, 340 - Salvador/BA',                 '(71) 95555-1202'),
+('Patrícia Gomes Duarte',     'patricia.duarte@prof.exemplo.com',  'senha123', '35791368024', '1988-09-14', 'Rua das Laranjeiras, 15 - Florianópolis/SC',   '(48) 95555-1303'),
+('Ricardo Alves Teixeira',    'ricardo.teixeira@prof.exemplo.com', 'senha123', '46802479135', '1979-12-03', 'Av. Independência, 720 - Porto Alegre/RS',     '(51) 95555-1404'),
+('Juliana Castro Mendes',     'juliana.mendes@prof.exemplo.com',   'senha123', '57913580246', '1990-04-08', 'Rua Pernambuco, 98 - Fortaleza/CE',            '(85) 95555-1505'),
+('Beatriz Monteiro Lopes',    'beatriz.lopes@admin.exemplo.com',   'senha123', '68024691357', '1984-07-19', 'Rua da Consolação, 2000 - São Paulo/SP',       '(11) 94444-1606'),
+('Eduardo Pinheiro Silva',    'eduardo.silva@admin.exemplo.com',   'senha123', '79135702468', '1987-03-23', 'Av. Rio Branco, 500 - Rio de Janeiro/RJ',      '(21) 94444-1707'),
+('Jéssica Lima Silveira',     'jessica.silveira@exemplo.com',      'senha123', '98765432109', '2004-02-11', 'Rua das Flores, 300 - Campinas/SP',            '(19) 97788-9900'),
+('Lucas Gabriel Martins',     'lucas.martins@exemplo.com',         'senha123', '12345678901', '2003-07-15', 'Av. Paulista, 1000 - São Paulo/SP',            '(11) 98877-6655'),
+('Beatriz Souza Costa',       'beatriz.costa@exemplo.com',         'senha123', '32165498702', '2001-11-20', 'Rua da Bahia, 500 - Belo Horizonte/MG',        '(31) 97766-5544');
 
 INSERT INTO especializacao (nome) VALUES
 ('Desenvolvimento de Software'),
@@ -564,7 +564,7 @@ COMMIT;
 -- Caio Fernando Silva: 11261101927
 -- ---------------------------------------------------------------------
 
-CREATE VIEW Relatorio_Gerencial_Cursos AS
+CREATE VIEW vw_gerencial_cursos AS
 SELECT c.id AS id_curso,
        c.titulo AS curso,
        c.area AS area,
@@ -588,7 +588,7 @@ LEFT JOIN atividade ati ON ati.id_sala_de_aula = s.id AND ati.ativo = TRUE
 WHERE c.ativo = TRUE
 GROUP BY c.id, c.titulo, c.area, c.carga_horaria;
 
-SELECT * FROM Relatorio_Gerencial_Cursos;
+SELECT * FROM vw_gerencial_cursos;
 
 
 -- ---------------------------------------------------------------------
@@ -602,7 +602,7 @@ SHOW INDEX FROM vaga;
 -- VIEW: Relatório gerencial de emissão de certificados por aluno
 -- Leonardo Viana de Oliveira: 11261102539
 -- ---------------------------------------------------------------------
-CREATE VIEW Relatorio_Gerencial_Certificados AS
+CREATE VIEW vw_gerencial_certificados AS
 SELECT u.nome AS aluno,
        COUNT(c.id) AS total_certificados,
        SUM(c.carga_horaria) AS total_horas_certificadas,
@@ -613,16 +613,20 @@ JOIN certificado c ON c.id_aluno = a.id
 WHERE a.ativo = TRUE AND c.ativo = TRUE
 GROUP BY a.id, u.nome;
 
+SELECT * FROM vw_gerencial_certificados;
+
 -- ÍNDICE: Otimização de busca de certificados e datas
 -- Leonardo Viana de Oliveira: 11261102539
 CREATE INDEX idx_certificado_aluno_emissao ON certificado(id_aluno, dt_emissao);
+
+SHOW INDEX FROM certificado;
 
 
 -- ---------------------------------------------------------------------
 -- VIEW: Relatório gerencial de vagas e candidaturas
 -- Christian Mateus Costa Alves: 11261102933
 -- ---------------------------------------------------------------------
-CREATE VIEW Relatorio_Gerencial_Vagas AS
+CREATE VIEW vw_gerencial_vagas AS
 SELECT p.id AS id_professor,
        u.nome AS professor_responsavel,
        COUNT(v.id) AS total_vagas_publicadas,
@@ -635,9 +639,13 @@ LEFT JOIN aluno_vaga av ON av.id_vaga = v.id AND av.ativo = TRUE
 WHERE p.ativo = TRUE
 GROUP BY p.id, u.nome;
 
+SELECT * FROM vw_gerencial_vagas;
+
 -- ÍNDICE: Busca rápida de usuários por e-mail no login
 -- Christian Mateus Costa Alves: 11261102933
 CREATE INDEX idx_usuario_email_ativo ON usuario(email, ativo);
+
+SHOW INDEX FROM usuario;
 
 
 -- ---------------------------------------------------------------------
@@ -680,17 +688,21 @@ GROUP BY
     c.area,
     al.id,
     u.nome;
-    
+
+SELECT * FROM vw_dashboard_cursos;
+
 -- ÍNDICE: Otimização do cruzamento de atividades por sala e aluno (dashboard)
 -- Ricardo Câmara Costa Neto: 11261102104
 
 CREATE INDEX idx_atividade_sala_aluno_notas ON atividade(id_sala_de_aula, id_aluno, nota, nota_maxima);
 
+SHOW INDEX FROM atividade;
+
 -- ---------------------------------------------------------------------
 -- VIEW: Relatório gerencial de candidaturas por vaga
 -- Leonardo Bertaglia dos Santos: 11261102301
 -- ---------------------------------------------------------------------
-CREATE VIEW Relatorio_Gerencial_Candidaturas AS
+CREATE VIEW vw_gerencial_candidaturas AS
 SELECT v.id AS id_vaga,
        v.titulo AS vaga,
        v.status AS status_vaga,
@@ -719,28 +731,38 @@ LEFT JOIN (SELECT id_aluno, AVG(nota / nota_maxima * 100) AS aproveitamento
 WHERE v.ativo = TRUE
 GROUP BY v.id, v.titulo, v.status, v.dt_publicacao, u.nome;
 
+SELECT * FROM vw_gerencial_candidaturas;
+
 -- ÍNDICE: Otimização do cálculo de aproveitamento dos candidatos (atividades)
 -- Leonardo Bertaglia dos Santos: 11261102301
 CREATE INDEX idx_atividade_aluno_aproveitamento ON atividade(id_aluno, ativo, nota, nota_maxima);
 
+SHOW INDEX FROM atividade;
+
 -- -------------------------------------------------------
--- VIEW: Relatório gerencial de candidaturas por vaga
+-- VIEW: Relatório gerencial de desempenho dos alunos nos jogos educativos
 -- João Pedro Alves Pereira: [11261102895]
 -- -------------------------------------------------------
-CREATE OR REPLACE VIEW Relatorio_Gerencial_Candidaturas AS
-SELECT 
-    v.id AS id_vaga,
-    v.Titulo AS Vaga,
-    COUNT(av.id_aluno) AS total_candidatos,
-    MAX(av.dt_candidatura) AS ultima_candidatura
-FROM VAGA v
-JOIN aluno_vaga av ON av.id_vaga = v.id
-WHERE v.ativo = TRUE 
-  AND av.ativo = TRUE
-GROUP BY v.id, v.Titulo;
+CREATE OR REPLACE VIEW vw_gerencial_jogos AS
+SELECT
+    j.id AS id_jogo,
+    j.nome AS jogo,
+    j.categoria AS categoria,
+    c.titulo AS curso,
+    j.pontuacao_maxima AS pontuacao_maxima,
+    COUNT(aj.id_aluno) AS total_jogadores,
+    ROUND(AVG(aj.pontuacao / j.pontuacao_maxima * 100), 2) AS media_aproveitamento,
+    MAX(aj.pontuacao) AS maior_pontuacao
+FROM jogo j
+JOIN curso c ON j.id_curso = c.id
+LEFT JOIN aluno_jogo aj ON aj.id_jogo = j.id AND aj.ativo = TRUE
+WHERE j.ativo = TRUE
+GROUP BY j.id, j.nome, j.categoria, c.titulo, j.pontuacao_maxima;
 
--- ÍNDICE: Otimização de busca de candidaturas por vaga
+SELECT * FROM vw_gerencial_jogos;
+
+-- ÍNDICE: Otimização da busca de pontuações por jogo
 -- João Pedro Alves Pereira: [11261102895]
-CREATE INDEX idx_aluno_vaga_vaga ON aluno_vaga(id_vaga, ativo);
+CREATE INDEX idx_aluno_jogo_jogo_pontuacao ON aluno_jogo(id_jogo, pontuacao);
 
-CREATE INDEX idx_aluno_vaga_vaga ON aluno_vaga(id_vaga, ativo);
+SHOW INDEX FROM aluno_jogo;
