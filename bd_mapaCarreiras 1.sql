@@ -722,3 +722,22 @@ GROUP BY v.id, v.titulo, v.status, v.dt_publicacao, u.nome;
 -- ÍNDICE: Otimização do cálculo de aproveitamento dos candidatos (atividades)
 -- Leonardo Bertaglia dos Santos: 11261102301
 CREATE INDEX idx_atividade_aluno_aproveitamento ON atividade(id_aluno, ativo, nota, nota_maxima);
+
+-- -------------------------------------------------------
+-- VIEW: Relatório gerencial de candidaturas por vaga
+-- João Pedro Alves Pereira: [11261102895]
+-- -------------------------------------------------------
+CREATE OR REPLACE VIEW Relatorio_Gerencial_Candidaturas AS
+SELECT 
+    v.id AS id_vaga,
+    v.Titulo AS Vaga,
+    COUNT(av.id_aluno) AS total_candidatos,
+    MAX(av.dt_candidatura) AS ultima_candidatura
+FROM VAGA v
+JOIN aluno_vaga av ON av.id_vaga = v.id
+WHERE v.ativo = TRUE 
+  AND av.ativo = TRUE
+GROUP BY v.id, v.Titulo;
+
+-- ÍNDICE: Otimização de busca de candidaturas por vaga
+-- João Pedro Alves Pereira: [11261102895]
