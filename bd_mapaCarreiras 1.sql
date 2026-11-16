@@ -596,6 +596,21 @@ SELECT * FROM Relatorio_Gerencial_Cursos;
 -- Caio Fernando Silva: 11261101927
 -- ---------------------------------------------------------------------
 
-CREATE INDEX idx_vaga_status_publicacao ON vaga(status, dt_publicacao);
+-- ---------------------------------------------------------------------
+-- VIEW: Relatório gerencial de emissão de certificados por aluno
+-- Leonardo Viana de Oliveira: 11261102539
+-- ---------------------------------------------------------------------
+CREATE VIEW Relatorio_Gerencial_Certificados AS
+SELECT u.nome AS aluno,
+       COUNT(c.id) AS total_certificados,
+       SUM(c.carga_horaria) AS total_horas_certificadas,
+       MAX(c.dt_emissao) AS ultimo_certificado_emitido
+FROM aluno a
+JOIN usuario u ON a.id_usuario = u.id
+JOIN certificado c ON c.id_aluno = a.id
+WHERE a.ativo = TRUE AND c.ativo = TRUE
+GROUP BY a.id, u.nome;
 
-SHOW INDEX FROM vaga;
+-- ÍNDICE: Otimização de busca de certificados e datas
+-- Leonardo Viana de Oliveira: 11261102539
+CREATE INDEX idx_certificado_aluno_emissao ON certificado(id_aluno, dt_emissao);
