@@ -636,3 +636,87 @@ GROUP BY p.id, u.nome;
 -- ÍNDICE: Busca rápida de usuários por e-mail no login
 -- Christian Mateus Costa Alves: 11261102933
 CREATE INDEX idx_usuario_email_ativo ON usuario(email, ativo);
+
+
+-- ---------------------------------------------------------------------
+-- VIEW: Dashboard de desempenho dos alunos por curso
+-- Rafael Camara Costa Neto: 11261102104
+-- ---------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW vw_dashboard_cursos AS
+SELECT
+    c.id AS id_curso,
+    c.titulo AS nome_curso,
+    c.area AS area_curso,
+    al.id AS id_aluno,
+    u.nome AS nome_aluno,
+    COUNT(at.id) AS qtd_atividades_acessadas,
+    AVG(at.nota) AS media_nota,
+    AVG(at.nota_maxima) AS media_nota_maxima,
+    AVG(c.carga_horaria) AS media_carga_horaria,
+    CASE
+        WHEN AVG(at.nota) >= 7 THEN 'Avançado'
+        WHEN AVG(at.nota) >= 5 THEN 'Intermediário'
+        ELSE 'Iniciante'
+    END AS nivel_aluno
+FROM curso c
+INNER JOIN sala_de_aula sa
+    ON sa.id_curso = c.id
+INNER JOIN aluno_sala als
+    ON als.id_sala_de_aula = sa.id
+INNER JOIN aluno al
+    ON al.id = als.id_aluno
+INNER JOIN usuario u
+    ON u.id = al.id
+LEFT JOIN atividade at
+    ON at.id_sala_de_aula = sa.id
+    AND at.id_aluno = al.id
+WHERE c.titulo IS NOT NULL
+GROUP BY
+    c.id,
+    c.titulo,
+    c.area,
+    al.id,
+    u.nome;
+    
+-- ÍNDICE: Otimização do cruzamento de atividades por sala e aluno (dashboard)
+-- Ricardo Câmara Costa Neto: 11261102104
+
+CREATE INDEX idx_atividade_sala_aluno_notas ON atividade(id_sala_de_aula, id_aluno, nota, nota_maxima);
+
+-- ---------------------------------------------------------------------
+-- VIEW: Relatório gerencial de candidaturas por vaga
+-- Leonardo Bertaglia dos Santos: 11261102301
+-- ---------------------------------------------------------------------
+CREATE VIEW Relatorio_Gerencial_Candidaturas AS
+SELECT v.id AS id_vaga,
+       v.titulo AS vaga,
+       v.status AS status_vaga,
+       v.dt_publicacao AS data_publicacao,
+       u.nome AS professor_responsavel,
+       COUNT(av.id_aluno) AS total_candidaturas,
+       COUNT(cert.id_aluno) AS candidatos_com_certificado,
+       ROUND(AVG(ati.aproveitamento), 2) AS media_aproveitamento_candidatos,
+       CASE
+           WHEN COUNT(av.id_aluno) = 0 THEN 'Sem candidatos'
+           WHEN COUNT(av.id_aluno) >= 3 THEN 'Alta procura'
+           ELSE 'Procura moderada'
+       END AS nivel_procura
+FROM vaga v
+JOIN professor p ON v.id_professor = p.id
+JOIN usuario u ON p.id_usuario = u.id
+LEFT JOIN aluno_vaga av ON av.id_vaga = v.id AND av.ativo = TRUE
+LEFT JOIN (SELECT id_aluno, COUNT(*) AS total_certificados
+           FROM certificado
+           WHERE ativo = TRUE
+           GROUP BY id_aluno) cert ON cert.id_aluno = av.id_aluno
+LEFT JOIN (SELECT id_aluno, AVG(nota / nota_maxima * 100) AS aproveitamento
+           FROM atividade
+           WHERE ativo = TRUE AND id_aluno IS NOT NULL AND nota IS NOT NULL
+           GROUP BY id_aluno) ati ON ati.id_aluno = av.id_aluno
+WHERE v.ativo = TRUE
+GROUP BY v.id, v.titulo, v.status, v.dt_publicacao, u.nome;
+
+-- ÍNDICE: Otimização do cálculo de aproveitamento dos candidatos (atividades)
+-- Leonardo Bertaglia dos Santos: 11261102301
+CREATE INDEX idx_atividade_aluno_aproveitamento ON atividade(id_aluno, ativo, nota, nota_maxima);
