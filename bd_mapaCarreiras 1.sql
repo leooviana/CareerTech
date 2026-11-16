@@ -650,7 +650,7 @@ SHOW INDEX FROM usuario;
 
 -- ---------------------------------------------------------------------
 -- VIEW: Dashboard de desempenho dos alunos por curso
--- Rafael Camara Costa Neto: 11261102104
+-- Ricardo Camara Costa Neto: 11261102104
 -- ---------------------------------------------------------------------
 
 CREATE OR REPLACE VIEW vw_dashboard_cursos AS
@@ -766,3 +766,22 @@ SELECT * FROM vw_gerencial_jogos;
 CREATE INDEX idx_aluno_jogo_jogo_pontuacao ON aluno_jogo(id_jogo, pontuacao);
 
 SHOW INDEX FROM aluno_jogo;
+
+-- ---------------------------------------------------------------------
+-- VIEW: Relatório gerencial de publicações por usuário
+-- Rafael da Silva Neves : 11262501496
+-- ---------------------------------------------------------------------
+CREATE VIEW Relatorio_Gerencial_Publicacoes AS
+SELECT u.id AS id_usuario,
+       u.nome AS usuario,
+       COUNT(p.id) AS total_publicacoes,
+       MAX(p.dt_publicacao) AS ultima_publicacao
+FROM usuario u
+LEFT JOIN publicacao p ON p.id_usuario = u.id AND p.ativo = TRUE
+WHERE u.ativo = TRUE
+GROUP BY u.id, u.nome;
+SELECT * FROM Relatorio_Gerencial_Publicacoes
+ORDER BY total_publicacoes DESC;
+-- ÍNDICE: Otimiza a contagem e a data da última publicação por usuário
+-- Rafael da Silva Neves : 11262501496
+CREATE INDEX idx_publicacao_usuario_data ON publicacao(id_usuario, dt_publicacao)
