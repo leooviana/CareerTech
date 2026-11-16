@@ -614,3 +614,25 @@ GROUP BY a.id, u.nome;
 -- ÍNDICE: Otimização de busca de certificados e datas
 -- Leonardo Viana de Oliveira: 11261102539
 CREATE INDEX idx_certificado_aluno_emissao ON certificado(id_aluno, dt_emissao);
+
+
+-- ---------------------------------------------------------------------
+-- VIEW: Relatório gerencial de vagas e candidaturas
+-- Christian Matheus Costa Alves: 11261102933
+-- ---------------------------------------------------------------------
+CREATE VIEW Relatorio_Gerencial_Vagas AS
+SELECT p.id AS id_professor,
+       u.nome AS professor_responsavel,
+       COUNT(v.id) AS total_vagas_publicadas,
+       SUM(CASE WHEN v.status = 'aberta' THEN 1 ELSE 0 END) AS vagas_abertas,
+       COUNT(av.id_aluno) AS total_candidaturas
+FROM professor p
+JOIN usuario u ON p.id_usuario = u.id
+LEFT JOIN vaga v ON v.id_professor = p.id AND v.ativo = TRUE
+LEFT JOIN aluno_vaga av ON av.id_vaga = v.id AND av.ativo = TRUE
+WHERE p.ativo = TRUE
+GROUP BY p.id, u.nome;
+
+-- ÍNDICE: Busca rápida de usuários por e-mail no login
+-- Christian Matheus Costa Alves: 11261102933
+CREATE INDEX idx_usuario_email_ativo ON usuario(email, ativo);
