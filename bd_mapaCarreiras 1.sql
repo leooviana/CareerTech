@@ -741,3 +741,6 @@ GROUP BY v.id, v.Titulo;
 
 -- ÍNDICE: Otimização de busca de candidaturas por vaga
 -- João Pedro Alves Pereira: [11261102895]
+CREATE INDEX idx_aluno_vaga_vaga ON aluno_vaga(id_vaga, ativo);
+
+CREATE INDEX idx_aluno_vaga_vaga ON aluno_vaga(id_vaga, ativo);
